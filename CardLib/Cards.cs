@@ -21,7 +21,7 @@ namespace CardLib
         /// <summary>
         /// Utility method for copying card instances into another Cards
         /// instance-used in Deck.Shuffle(). This implementation assimes that
-        /// source and target collections are ths ame size.
+        /// source and target collections are ths same size.
         /// </summary>
         /// <param name="targetCards"></param>
         public void CopyTo(Cards targetCards)
