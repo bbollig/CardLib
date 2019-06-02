@@ -11,11 +11,11 @@ namespace DrawFlush
         {
             Deck deck = new Deck();
             deck.Shuffle();
-            List<Card> hand = new List<Card>();
+            Cards hand = new Cards();
             bool match = false;
             for (int i = 0; i < 1000; i++)
             {
-                hand = (List<Card>)deck.DrawFive(false);
+                hand = deck.DrawFive(false);
                 match = Deck.IsFlush(hand);
                 WriteLine(string.Join(", ", hand.Select(c => c.suit)));
 
