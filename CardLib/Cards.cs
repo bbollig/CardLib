@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardLib
 {
-    class Cards : CollectionBase
+    public class Cards : CollectionBase, IEnumerable<Card>
     {
         public void Add(Card newCard) => List.Add(newCard);
         public void Remove(Card oldCard) => List.Remove(oldCard);
@@ -20,13 +20,13 @@ namespace CardLib
 
         /// <summary>
         /// Utility method for copying card instances into another Cards
-        /// instance-used in Deck.Shuffle(). This implementation assimes that
+        /// instance-used in Deck.Shuffle(). This implementation assumes that
         /// source and target collections are ths same size.
         /// </summary>
         /// <param name="targetCards"></param>
         public void CopyTo(Cards targetCards)
         {
-            for (int index = 0; index < this.Count; index++)
+            for (int index = 0; index < targetCards.Count(); index++)
             {
                 targetCards[index] = this[index];
             }
@@ -40,5 +40,16 @@ namespace CardLib
         /// <param name="card"></param>
         /// <returns></returns>
         public bool Contains(Card card) => InnerList.Contains(card);
+
+        //LINQ expects types that implement IEnumerable<t> and CollectionBase does not. 
+        //To make CollectionBase support Linq, simply adding the parent and adding implementatoin
+        //fixes this.
+        IEnumerator<Card> IEnumerable<Card>.GetEnumerator()
+        {
+            foreach (Card card in this.List)
+            {
+                yield return card;
+            }
+        }
     }
 }
