@@ -6,23 +6,20 @@ namespace CardLib
 {
     public class Deck
     {
-        public Card[] Cards { get; }
+        public Cards Cards { get; private set; } = new Cards();
 
-        public List<Card> ListTaken { get; private set; } = new List<Card>();
+        public Cards ListTaken { get; private set; } = new Cards();
 
         /// <summary>
         /// Creates a Deck of Cards, ordered by Suit and Rank
         /// </summary>
         public Deck()
         {
-            Cards = new Card[52];
-
             for (int suitVal = 0; suitVal < 4; suitVal++)
             {
                 for (int rankVal = 1; rankVal < 14; rankVal++)
                 {
-                    Cards[suitVal * 13 + rankVal - 1] = new Card((Suit)suitVal,
-                                                                (Rank)rankVal);
+                    Cards.Add(new Card((Suit)suitVal, (Rank)rankVal));
                 }
             }
         }
@@ -46,25 +43,25 @@ namespace CardLib
         /// </summary>
         public void Shuffle()
         {
-            Card[] newDeck = new Card[52];
+            Cards newDeck = new Cards();
             bool[] assigned = new bool[52];
             Random sourceGen = new Random();
 
             for (int i = 0; i < 52; i++)
             {
-                int destCard = 0;
+                int sourceCard = 0;
                 bool foundCard = false;
 
                 while (foundCard == false)
                 {
-                    destCard = sourceGen.Next(52);
-                    if (assigned[destCard] == false)
+                    sourceCard = sourceGen.Next(52);
+                    if (assigned[sourceCard] == false)
                         foundCard = true;
                 }
-                assigned[destCard] = true;
-                newDeck[destCard] = Cards[i];
+                assigned[sourceCard] = true;
+                newDeck.Add(Cards[sourceCard]);
             }
-            newDeck.CopyTo(Cards, 0);
+            newDeck.CopyTo(Cards);
         }
         /// <summary>
         /// Draws five cards at Random from the Deck object. Bool parameter persistTaken
@@ -73,17 +70,16 @@ namespace CardLib
         /// </summary>
         /// <param name="persistTaken"></param>
         /// <returns></returns>
-        public IEnumerable<Card> DrawFive(bool persistTaken)
+        public Cards DrawFive(bool persistTaken)
         {
-            List<Card> fiveCards = new List<Card>();
-            List<Card> newDeck = new List<Card>(Cards);
+            Cards fiveCards = new Cards();
 
             if (!persistTaken)
             {
-                ListTaken = new List<Card>();
+                ListTaken = new Cards();
             }
 
-            while (fiveCards.Count < 5)
+            while (fiveCards.Count() < 5)
             {
                 Random randomNumber = new Random();
                 Card card = GetCard(randomNumber.Next(52));
@@ -96,7 +92,7 @@ namespace CardLib
             return fiveCards;
         }
 
-        public static bool IsFlush(IEnumerable<Card> hand)
+        public static bool IsFlush(Cards hand)
         {
             //if hand is empty, return false
             if (hand == null) return false;
