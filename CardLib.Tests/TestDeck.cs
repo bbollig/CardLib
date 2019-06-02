@@ -31,14 +31,14 @@ namespace CardLib.Tests
         [TestMethod]
         public void FlushEmptyHand()
         {
-            var hand = new List<Card>();
+            var hand = new Cards();
             Assert.IsFalse(Deck.IsFlush(hand));
         }
 
         [TestMethod]
         public void FlushNullHand()
         {
-            List<Card> hand = null;
+            Cards hand = null;
             Assert.IsFalse(Deck.IsFlush(hand));
         }
 
@@ -53,7 +53,7 @@ namespace CardLib.Tests
             Card six = new Card(Suit.Club, Rank.Six);
             
             //Test sending less than 5
-            var hand = new List<Card> { one, two, three, four };
+            var hand = new Cards { one, two, three, four };
             Assert.IsFalse(Deck.IsFlush(hand));
             
             //Test a five card hand
@@ -76,7 +76,7 @@ namespace CardLib.Tests
             Card heart = new Card(Suit.Heart, Rank.Six);
             
             //Test 4 clubs, one heart
-            var hand = new List<Card> { one, two, three, four, heart };
+            var hand = new Cards { one, two, three, four, heart };
             Assert.IsFalse(Deck.IsFlush(hand));
 
             hand.Remove(heart);
