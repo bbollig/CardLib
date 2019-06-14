@@ -1,6 +1,8 @@
-﻿namespace CardLib
+﻿using System;
+
+namespace CardLib
 {
-    public class Card
+    public class Card : ICloneable
     {
         public readonly Suit suit;
         public readonly Rank rank;
@@ -11,6 +13,8 @@
             rank = newRank;
         }
         private Card() { }
+
+        public object Clone() => MemberwiseClone();
 
         public override string ToString() => $"The {rank} of {suit}s";
     }
