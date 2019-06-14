@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardLib
 {
-    public class Cards : CollectionBase, IEnumerable<Card>
+    public class Cards : CollectionBase, IEnumerable<Card>, ICloneable
     {
         public void Add(Card newCard) => List.Add(newCard);
         public void Remove(Card oldCard) => List.Remove(oldCard);
@@ -50,6 +50,20 @@ namespace CardLib
             {
                 yield return card;
             }
+        }
+
+        public object Clone()
+        {
+            Cards newCards = new Cards();
+
+            foreach (Card sourceCard in List)
+            {
+                //Cards is a strongly typed Collection Class and Clone returns an object so here we 
+                //must cast the object returned by Clone to Card while adding it to newCards
+                newCards.Add((Card)sourceCard.Clone());
+            }
+
+            return newCards;
         }
     }
 }
