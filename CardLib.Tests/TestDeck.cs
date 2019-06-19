@@ -14,7 +14,7 @@ namespace CardLib.Tests
             var aceOfClubs = new Card(Suit.Club, Rank.Ace);
             var topCard = testDeck.GetCard(0);
 
-            Assert.IsTrue(aceOfClubs.suit == topCard.suit && aceOfClubs.rank == topCard.rank);
+            Assert.IsTrue(aceOfClubs._Suit == topCard._Suit && aceOfClubs._Rank == topCard._Rank);
         }
 
         [TestMethod]
@@ -83,6 +83,46 @@ namespace CardLib.Tests
             hand.Add(five);
             //Test 5 clubs
             Assert.IsTrue(Deck.IsFlush(hand));
+        }
+
+        [TestMethod]
+        public void TestCardsEquals()
+        {
+            Cards setOne = new Cards();
+            Card setTwo = new Card(Suit.Club, Rank.Ace);
+            Card setThree = new Card(Suit.Heart, Rank.Ace);
+
+            Assert.IsTrue(setOne.Equals(setTwo));
+            Assert.IsFalse(setOne.Equals(setThree));
+        }
+
+
+        [TestMethod]
+        public void TestClone()
+        {
+            Deck deck1 = new Deck();
+            Deck deck2 = (Deck)deck1.Clone();
+
+            Assert.IsTrue(deck1.GetCard(0).Equals(deck2.GetCard(0)));
+            Assert.IsTrue(deck1.GetCard(5).Equals(deck2.GetCard(5)));
+            Assert.IsTrue(deck1.GetCard(25).Equals(deck2.GetCard(25)));
+            Assert.IsTrue(deck1.GetCard(51).Equals(deck2.GetCard(51)));
+
+            deck1.Shuffle();
+
+            Assert.IsFalse(deck1.GetCard(0).Equals(deck2.GetCard(0)));
+            Assert.IsFalse(deck1.GetCard(5).Equals(deck2.GetCard(5)));
+            Assert.IsFalse(deck1.GetCard(25).Equals(deck2.GetCard(25)));
+            Assert.IsFalse(deck1.GetCard(51).Equals(deck2.GetCard(51)));
+
+
+            Deck deck3 = (Deck)deck1.Clone();
+
+            Assert.IsTrue(deck1.GetCard(0).Equals(deck2.GetCard(0)));
+            Assert.IsTrue(deck1.GetCard(5).Equals(deck2.GetCard(5)));
+            Assert.IsTrue(deck1.GetCard(25).Equals(deck2.GetCard(25)));
+            Assert.IsTrue(deck1.GetCard(51).Equals(deck2.GetCard(51)));
+
         }
 
     }

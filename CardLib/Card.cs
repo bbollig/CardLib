@@ -2,20 +2,27 @@
 
 namespace CardLib
 {
-    public class Card : ICloneable
+    public class Card : ICloneable, IEquatable<Card>
     {
-        public readonly Suit suit;
-        public readonly Rank rank;
+        public readonly Suit _Suit;
+        public readonly Rank _Rank;
 
         public Card(Suit newSuit, Rank newRank)
         {
-            suit = newSuit;
-            rank = newRank;
+            _Suit = newSuit;
+            _Rank = newRank;
         }
+
         private Card() { }
+
+        public override string ToString() => $"The {_Rank} of {_Suit}s";
 
         public object Clone() => MemberwiseClone();
 
-        public override string ToString() => $"The {rank} of {suit}s";
+        public bool Equals(Card other)
+        {
+            return _Suit == other._Suit && _Rank == other._Rank;
+        }
+
     }
 }

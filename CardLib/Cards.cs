@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CardLib
 {
-    public class Cards : CollectionBase, IEnumerable<Card>, ICloneable
+    public class Cards : CollectionBase, IEnumerable<Card>, ICloneable, IEquatable<Cards>
     {
         public void Add(Card newCard) => List.Add(newCard);
         public void Remove(Card oldCard) => List.Remove(oldCard);
@@ -64,6 +64,24 @@ namespace CardLib
             }
 
             return newCards;
+        }
+
+        public bool Equals(Cards other)
+        {
+            if (other == null)
+                return false;
+            if (List.Count != other.Count)
+                return false;
+
+            for (int i = 0; i < List.Count; i++)
+            {
+                if (!List[i].Equals(other.List[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -105,9 +105,9 @@ namespace CardLib
             //if hand is not equal to 5 return false
             if (hand.Count() != 5) return false;
 
-            Suit suit = hand.First().suit;
+            Suit suit = hand.First()._Suit;
 
-            if (hand.Any(c => c.suit != suit))
+            if (hand.Any(c => c._Suit != suit))
             {
                 return false;
             }
