@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CardLib
 {
-    public class Deck
+    public class Deck : ICloneable
     {
         public Cards Cards { get; private set; } = new Cards();
 
@@ -23,6 +23,12 @@ namespace CardLib
                 }
             }
         }
+
+        /// <summary>
+        /// Creates a new Deck, identical in order to the new Deck being fed as a parameter
+        /// </summary>
+        /// <param name="newCards"></param>
+        private Deck(Cards newCards) => Cards = newCards;
 
         /// <summary>
         /// Returns a single Card object at the index specified
@@ -99,14 +105,20 @@ namespace CardLib
             //if hand is not equal to 5 return false
             if (hand.Count() != 5) return false;
 
-            Suit suit = hand.First().suit;
+            Suit suit = hand.First()._Suit;
 
-            if (hand.Any(c => c.suit != suit))
+            if (hand.Any(c => c._Suit != suit))
             {
                 return false;
             }
 
             return true;
+        }
+
+        public object Clone()
+        {
+            Deck newDeck = new Deck(Cards.Clone() as Cards);
+            return newDeck;
         }
     }
 }

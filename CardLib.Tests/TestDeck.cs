@@ -14,7 +14,7 @@ namespace CardLib.Tests
             var aceOfClubs = new Card(Suit.Club, Rank.Ace);
             var topCard = testDeck.GetCard(0);
 
-            Assert.IsTrue(aceOfClubs.suit == topCard.suit && aceOfClubs.rank == topCard.rank);
+            Assert.IsTrue(aceOfClubs._Suit == topCard._Suit && aceOfClubs._Rank == topCard._Rank);
         }
 
         [TestMethod]
@@ -83,6 +83,40 @@ namespace CardLib.Tests
             hand.Add(five);
             //Test 5 clubs
             Assert.IsTrue(Deck.IsFlush(hand));
+        }
+
+        [TestMethod]
+        public void TestClone()
+        {
+            Deck deck1 = new Deck();
+
+            //Clone deck1 into deck2 and check that all cards in both decks are equal
+            Deck deck2 = (Deck)deck1.Clone();
+
+            for (int i = 0; i < deck1.Cards.Count; i++)
+            {
+                Assert.IsTrue(deck1.GetCard(i).Equals(deck2.GetCard(i)));
+            }
+
+            //Now after a shuffle of deck one, check to ensure most positions in both decks are 
+            //not the same card. Cannot use a for loop here because there is a small chance that 
+            //sometimes the test will fail because the odds of the same card ending up in the 
+            //same position after a Shuffle are possible.
+            deck1.Shuffle();
+
+            Assert.IsFalse(deck1.GetCard(0).Equals(deck2.GetCard(0)) && 
+                           deck1.GetCard(5).Equals(deck2.GetCard(5)) &&
+                           deck1.GetCard(25).Equals(deck2.GetCard(25)) &&
+                           deck1.GetCard(51).Equals(deck2.GetCard(51)));
+
+            //Now clone the shuffled deck1 into deck3 and check if each of the cards in both decks 
+            //are the same card in each position
+            Deck deck3 = (Deck)deck1.Clone();
+
+            for (int i = 0; i < deck3.Cards.Count; i++)
+            {
+                Assert.IsTrue(deck1.GetCard(i).Equals(deck3.GetCard(i)));
+            }
         }
 
     }

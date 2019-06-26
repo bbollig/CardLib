@@ -17,7 +17,7 @@ namespace DrawFlush
             {
                 hand = deck.DrawFive(false);
                 match = Deck.IsFlush(hand);
-                WriteLine(string.Join(", ", hand.Select(c => c.suit)));
+                WriteLine(string.Join(", ", hand.Select(c => c._Suit)));
 
                 if (match)
                 {
