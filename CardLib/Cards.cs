@@ -18,6 +18,17 @@ namespace CardLib
             set { List[cardIndex] = value; }
         }
 
+        //LINQ expects types that implement IEnumerable<t> and CollectionBase does not. 
+        //To make CollectionBase support Linq, simply adding the parent and adding implementatoin
+        //fixes this.
+        IEnumerator<Card> IEnumerable<Card>.GetEnumerator()
+        {
+            foreach (Card card in List)
+            {
+                yield return card;
+            }
+        }
+
         /// <summary>
         /// Utility method for copying card instances into another Cards
         /// instance-used in Deck.Shuffle(). This implementation assumes that
@@ -32,6 +43,24 @@ namespace CardLib
             }
         }
 
+        public bool Equals(Cards other)
+        {
+            if (other == null)
+                return false;
+            if (List.Count != other.Count)
+                return false;
+
+            for (int i = 0; i < List.Count; i++)
+            {
+                if (!List[i].Equals((Card)other.List[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Check to see if the Cards collection contains a partuclar card.
         /// This calls the Contains() method of the ArraList for the collection,
@@ -41,17 +70,10 @@ namespace CardLib
         /// <returns></returns>
         public bool Contains(Card card) => InnerList.Contains(card);
 
-        //LINQ expects types that implement IEnumerable<t> and CollectionBase does not. 
-        //To make CollectionBase support Linq, simply adding the parent and adding implementatoin
-        //fixes this.
-        IEnumerator<Card> IEnumerable<Card>.GetEnumerator()
-        {
-            foreach (Card card in this.List)
-            {
-                yield return card;
-            }
-        }
-
+        /// <summary>
+        /// Returns a new set of Cards in identical order to the originating set
+        /// </summary>
+        /// <returns></returns>
         public object Clone()
         {
             Cards newCards = new Cards();
@@ -64,24 +86,6 @@ namespace CardLib
             }
 
             return newCards;
-        }
-
-        public bool Equals(Cards other)
-        {
-            if (other == null)
-                return false;
-            if (List.Count != other.Count)
-                return false;
-
-            for (int i = 0; i < List.Count; i++)
-            {
-                if (!List[i].Equals(other.List[i]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
